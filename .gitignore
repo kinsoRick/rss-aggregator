@@ -1,0 +1,9 @@
+/node_modules/
+*.log
+dist
+assets
+.vercel
+.vscode/
+/test-results/
+/playwright-report/
+/playwright/.cache/
