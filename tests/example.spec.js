@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('test', async ({ page }) => {
-  await page.goto('https://frontend-project-11-8nkr.vercel.app/');
+  await page.goto('https://frontend-project-11-nine-nu.vercel.app/');
   await page.getByPlaceholder('ссылка RSS').click();
   await page.getByPlaceholder('ссылка RSS').fill('invalid link');
   await page.getByRole('button', { name: 'add' }).click();
