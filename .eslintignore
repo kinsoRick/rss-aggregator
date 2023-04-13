@@ -1,2 +1,5 @@
 node_modules
 dist
+tests
+test-examples
+playwright.config.js
