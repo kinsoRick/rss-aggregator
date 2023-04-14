@@ -1,6 +1,7 @@
 import onChange from 'on-change';
 import { flatten } from 'lodash';
 import * as yup from 'yup';
+import axios from 'axios';
 
 import render from './render.js';
 import nodes from './nodes.js';
@@ -31,10 +32,13 @@ const setRssToState = (url, state) => {
       state.status = constants.status.RECEIVED;
     })
     .catch((err) => {
+      if (axios.isAxiosError(err)) {
+        state.error = constants.errors.NETWORK;
+      }
       if (err.message === constants.errors.PARSE) {
         state.error = constants.errors.PARSE;
-        state.status = constants.status.INVALID;
       }
+      state.status = constants.status.INVALID;
     });
 };
 

@@ -11,6 +11,7 @@ const constants = {
     NOT_URL:  'NOT_URL',
     ALREADY:  'ALREADY',
     PARSE:    'PARSE',
+    NETWORK:  'NETWORK',
   },
   ui: {
     FEEDS: 'FEEDS',
