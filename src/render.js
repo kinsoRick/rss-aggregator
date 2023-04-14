@@ -107,6 +107,7 @@ const renderSuccess = (translate) => {
   clearFeedback();
   nodes.label.classList.add('text-success');
   nodes.label.textContent = translate('status.SUCCESS');
+  nodes.form.reset();
 };
 
 const changeModalValues = (post) => {
