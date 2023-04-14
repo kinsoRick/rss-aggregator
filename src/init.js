@@ -12,7 +12,7 @@ export default () => {
   return {
     i18n: {
       instance: i18n,
-      promise:  initialization,
+      promise: initialization,
     },
   };
 };

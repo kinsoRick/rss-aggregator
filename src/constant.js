@@ -1,22 +1,22 @@
 const constants = {
   status: {
-    FILLING:  'FILLING',
-    SENDING:  'SENDING',
-    INVALID:  'INVALID',
+    FILLING: 'FILLING',
+    SENDING: 'SENDING',
+    INVALID: 'INVALID',
     RECEIVED: 'RECEIVED',
-    SUCCESS:  'SUCCESS',
+    SUCCESS: 'SUCCESS',
   },
   errors: {
     REQUIRED: 'REQUIRED',
-    NOT_URL:  'NOT_URL',
-    ALREADY:  'ALREADY',
-    PARSE:    'PARSE',
-    NETWORK:  'NETWORK',
+    NOT_URL: 'NOT_URL',
+    ALREADY: 'ALREADY',
+    PARSE: 'PARSE',
+    NETWORK: 'NETWORK',
   },
   ui: {
     FEEDS: 'FEEDS',
     POSTS: 'POSTS',
-    VIEW:  'VIEW',
+    VIEW: 'VIEW',
   },
 };
 

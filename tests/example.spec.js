@@ -5,7 +5,6 @@ test('test', async ({ page }) => {
   await page.getByPlaceholder('ссылка RSS').click();
   await page.getByPlaceholder('ссылка RSS').fill('invalid link');
   await page.getByRole('button', { name: 'add' }).click();
-
   // Проверка на валидность
   await expect(page.getByText('Ссылка должна быть валидным URL')).toBeVisible();
   await expect(page.locator('#posts')).toBeEmpty();
