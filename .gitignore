@@ -6,4 +6,6 @@ assets
 .vscode/
 /test-results/
 /playwright-report/
+/playwright.config.js
+/tests/
 /playwright/.cache/
