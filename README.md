@@ -11,7 +11,6 @@
     <img alt="License: UNLICENSED" src="https://img.shields.io/github/license/kinsoRick/RSS Агрегатор" />
   </a>
   <a href="https://codeclimate.com/github/kinsoRick/frontend-project-11/maintainability"><img src="https://api.codeclimate.com/v1/badges/6eb16e3769ce29059c71/maintainability" /></a>
-  <a href="https://codeclimate.com/github/kinsoRick/frontend-project-11/test_coverage"><img src="https://api.codeclimate.com/v1/badges/6eb16e3769ce29059c71/test_coverage" /></a>
 </p>
 
 > RSS Агрегатор
