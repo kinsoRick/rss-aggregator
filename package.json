@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "RSS",
   "scripts": {
-    "test": "jest --colors"
+    "develop": "npx webpack serve",
+    "build": "NODE_ENV=production npx webpack",
+    "lint": "npx eslint ."  
   },
   "type": "module",
   "repository": {

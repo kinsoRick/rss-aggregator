@@ -21,4 +21,4 @@ rules:
   import/extensions: 0
   key-spacing: 0
   # for modifying state
-  no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }] 
+  no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["state", "nodes"] }] 

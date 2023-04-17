@@ -1,14 +1,11 @@
 develop:
-	npx webpack serve
+	yarn develop
 
 install:
 	yarn
 
 build:
-	NODE_ENV=production npx webpack
-
-test:
-	yarn test
+	yarn build
 
 lint:
-	npx eslint .
+	yarn lint

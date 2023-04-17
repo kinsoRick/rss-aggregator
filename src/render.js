@@ -1,6 +1,7 @@
 import { flatten } from 'lodash';
 import constants from './constant.js';
-import nodes from './nodes.js';
+
+const nodes = constants.nodes();
 
 const clearFeedback = () => {
   nodes.label.classList.remove('text-danger', 'text-success');
@@ -151,8 +152,8 @@ const renderPosts = (postsFeed, viewedPosts, translate) => {
   const posts = flatten(postsFeed);
   if (posts.length < 1) return;
 
-  const postsItems = posts.map((post) => createPostItem(post, viewedPosts, translate));
-  postsItems.forEach((item) => {
+  posts.forEach((post) => {
+    const item = createPostItem(post, viewedPosts, translate);
     postsList.append(item);
   });
 
