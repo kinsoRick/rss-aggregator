@@ -8,9 +8,7 @@ import render from './render.js';
 
 import getRssData, { checkUpdates } from './rss.js';
 import constants from './constant.js';
-import ru from './locales/ru.js';
-
-const nodes = constants.nodes();
+import resources from './locales/index.js';
 
 // flatten используется для вытаскивания постов.
 // Список постов содержиться в формате
@@ -21,17 +19,17 @@ const nodes = constants.nodes();
 const refreshFeeds = (state) => {
   const currentPostsLinks = flatten([...state.posts]).map((post) => post.link);
 
-  const RssPromises = [...state.feeds].map((feed) => checkUpdates(feed.link, currentPostsLinks)
+  const rssPromises = [...state.feeds].map((feed) => checkUpdates(feed.link, currentPostsLinks)
     .then((response) => {
       const { posts } = response;
       if (posts.length > 0) state.posts[0] = [...posts, ...state.posts[0]];
     })
     .catch((err) => {
-      console.log(err);
+      throw new Error(`Unexpected error -> ${err.message}`);
     }));
 
   const updateTime = 1000 * 5;
-  return Promise.all(RssPromises).then(() => setTimeout(refreshFeeds, updateTime, state));
+  return Promise.all(rssPromises).then(() => setTimeout(refreshFeeds, updateTime, state));
 };
 
 const setRssToState = (url, state) => {
@@ -52,10 +50,10 @@ const setRssToState = (url, state) => {
     });
 };
 
-const formHandler = (state) => {
-  nodes.form.addEventListener('submit', (e) => {
+const formHandler = (state, form) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const target = nodes.form;
+    const target = form;
     const formData = new FormData(target);
     const urlProvided = formData.get('url').toString();
 
@@ -81,8 +79,8 @@ const formHandler = (state) => {
   });
 };
 
-const buttonHandler = (state) => {
-  nodes.posts.addEventListener('click', (e) => {
+const buttonHandler = (state, postsContainer) => {
+  postsContainer.addEventListener('click', (e) => {
     e.preventDefault();
     const { target } = e;
     if (target.dataset.bsToggle !== undefined) {
@@ -96,6 +94,7 @@ const buttonHandler = (state) => {
 };
 
 const app = () => {
+  const nodes = constants.nodes();
   const state = {
     status: constants.status.FILLING,
     posts: [],
@@ -111,14 +110,14 @@ const app = () => {
   i18n.init({
     lng: 'ru',
     debug: true,
-    resources: { ru },
+    resources,
   }).then(() => {
     const watchedState = onChange(state, (path) => {
       render(state, path, i18n.t);
     });
 
-    formHandler(watchedState);
-    buttonHandler(watchedState);
+    formHandler(watchedState, nodes.form);
+    buttonHandler(watchedState, nodes.posts);
     refreshFeeds(watchedState);
   });
 };
