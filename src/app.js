@@ -9,12 +9,6 @@ import getRssData, { checkUpdates } from './rss.js';
 import constants from './constant.js';
 import resources from './locales/index.js';
 
-// flatten используется для вытаскивания постов.
-// Список постов содержиться в формате
-// Я считаю, что такое хранение, поможет при добавлении других фитч
-// posts = [
-//  [], [], [] - Посты разделенные по фидам, которые были загружены
-// ]
 const refreshFeeds = (state) => {
   const currentPostsLinks = [...state.posts].map((post) => post.link);
 
