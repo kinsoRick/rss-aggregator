@@ -1,5 +1,4 @@
 import onChange from 'on-change';
-import { flatten } from 'lodash';
 import * as yup from 'yup';
 import axios from 'axios';
 import i18next from 'i18next';
@@ -17,12 +16,15 @@ import resources from './locales/index.js';
 //  [], [], [] - Посты разделенные по фидам, которые были загружены
 // ]
 const refreshFeeds = (state) => {
-  const currentPostsLinks = flatten([...state.posts]).map((post) => post.link);
+  const currentPostsLinks = [...state.posts].map((post) => post.link);
 
   const rssPromises = [...state.feeds].map((feed) => checkUpdates(feed.link, currentPostsLinks)
     .then((response) => {
       const { posts } = response;
-      if (posts.length > 0) state.posts[0] = [...posts, ...state.posts[0]];
+      // if (posts.length > 0) state.posts[0] = [...posts, ...state.posts[0]];
+      if (posts.length > 0) {
+        state.posts.splice(0, 0, ...posts);
+      }
     })
     .catch((err) => {
       throw new Error(`Unexpected error -> ${err.message}`);
@@ -35,7 +37,7 @@ const refreshFeeds = (state) => {
 const setRssToState = (url, state) => {
   getRssData(url)
     .then((data) => {
-      state.posts.splice(0, 0, data.posts);
+      state.posts.splice(0, 0, ...data.posts);
       state.feeds.splice(0, 0, data.feed);
       state.status = constants.status.RECEIVED;
     })
@@ -85,7 +87,7 @@ const buttonHandler = (state, postsContainer) => {
     const { target } = e;
     if (target.dataset.bsToggle !== undefined) {
       const postId = parseInt(target.dataset.id, 10);
-      const posts = flatten([...state.posts]);
+      const posts = [...state.posts];
       const clickedPost = posts.find((post) => post.id === postId);
       state.postsViewed.current = clickedPost;
       state.postsViewed.all.push(clickedPost.id);

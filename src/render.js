@@ -1,4 +1,3 @@
-import { flatten } from 'lodash';
 import constants from './constant.js';
 
 const nodes = constants.nodes();
@@ -149,7 +148,7 @@ const renderPosts = (postsFeed, viewedPosts, translate) => {
 
   const card = createCard('ui.POSTS', translate);
 
-  const posts = flatten(postsFeed);
+  const posts = postsFeed;
   if (posts.length < 1) return;
 
   posts.forEach((post) => {
@@ -190,7 +189,7 @@ const render = (state, path, translate) => {
     case 'status':
       renderByStatus(state, translate);
       break;
-    case 'posts.0':
+    case 'posts':
       renderPosts([...state.posts], [...state.postsViewed.all], translate);
       break;
     case 'postsViewed.current':
