@@ -190,7 +190,7 @@ const render = (state, path, translate) => {
       renderByStatus(state, translate);
       break;
     case 'posts':
-      renderPosts([...state.posts], [...state.postsViewed.all], translate);
+      renderPosts(state.posts, state.postsViewed.all, translate);
       break;
     case 'postsViewed.current':
       changeModalValues(state.postsViewed.current);

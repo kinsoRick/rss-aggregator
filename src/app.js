@@ -10,14 +10,13 @@ import constants from './constant.js';
 import resources from './locales/index.js';
 
 const refreshFeeds = (state) => {
-  const currentPostsLinks = [...state.posts].map((post) => post.link);
+  const currentPostsLinks = state.posts.map((post) => post.link);
 
-  const rssPromises = [...state.feeds].map((feed) => checkUpdates(feed.link, currentPostsLinks)
+  const rssPromises = state.feeds.map((feed) => checkUpdates(feed.link, currentPostsLinks)
     .then((response) => {
       const { posts } = response;
-      // if (posts.length > 0) state.posts[0] = [...posts, ...state.posts[0]];
       if (posts.length > 0) {
-        state.posts.splice(0, 0, ...posts);
+        state.posts = [...posts, ...state.posts];
       }
     })
     .catch((err) => {
@@ -31,8 +30,8 @@ const refreshFeeds = (state) => {
 const setRssToState = (url, state) => {
   getRssData(url)
     .then((data) => {
-      state.posts.splice(0, 0, ...data.posts);
-      state.feeds.splice(0, 0, data.feed);
+      state.feeds = [data.feed, ...state.feeds];
+      state.posts = [...data.posts, ...state.posts];
       state.status = constants.status.RECEIVED;
     })
     .catch((err) => {
@@ -81,8 +80,7 @@ const buttonHandler = (state, postsContainer) => {
     const { target } = e;
     if (target.dataset.bsToggle !== undefined) {
       const postId = parseInt(target.dataset.id, 10);
-      const posts = [...state.posts];
-      const clickedPost = posts.find((post) => post.id === postId);
+      const clickedPost = state.posts.find((post) => post.id === postId);
       state.postsViewed.current = clickedPost;
       state.postsViewed.all.push(clickedPost.id);
     }

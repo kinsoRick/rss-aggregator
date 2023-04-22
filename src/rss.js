@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { uniqueId } from 'lodash';
-import constants from './constant.js';
 import parse from './parser.js';
 
 const getUrlPromise = (url) => axios.get('https://allorigins.hexlet.app/get', {
@@ -35,16 +34,12 @@ const parseFeed = (channel, url) => {
 export const checkUpdates = (url, links) => {
   const proxy = getUrlPromise(url);
   return proxy.then((res) => {
-    const { data, error } = parse(res);
-    if (error) {
-      const context = new Error(constants.errors.PARSE);
-      throw context;
-    }
+    const { data } = parse(res);
 
     const postsNodes = [...data.querySelectorAll('item')];
     const newPosts = postsNodes.filter((post) => {
       const link = post.querySelector('link').textContent;
-      return links.includes(link) === false;
+      return !links.includes(link);
     });
 
     if (newPosts.length < 1) return { posts: [] };
@@ -58,11 +53,7 @@ export const checkUpdates = (url, links) => {
 const getRssData = (url) => {
   const proxy = getUrlPromise(url);
   return proxy.then((res) => {
-    const { data, error } = parse(res);
-    if (error) {
-      const context = new Error(constants.errors.PARSE);
-      throw context;
-    }
+    const { data } = parse(res);
 
     const channel = data.querySelector('channel');
     const postsNodes = [...data.querySelectorAll('item')];
