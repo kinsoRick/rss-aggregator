@@ -23,7 +23,7 @@ const refreshFeeds = (state) => {
       throw new Error(`Unexpected error -> ${err.message}`);
     }));
 
-  const updateTime = 1000 * 5;
+  const updateTime = 5000; // in milliseconds;
   return Promise.all(rssPromises).then(() => setTimeout(refreshFeeds, updateTime, state));
 };
 
@@ -45,6 +45,16 @@ const setRssToState = (url, state) => {
     });
 };
 
+const validate = (links, url) => {
+  const schema = yup
+    .string()
+    .required(constants.errors.REQUIRED)
+    .url(constants.errors.NOT_URL)
+    .notOneOf(links, constants.errors.ALREADY);
+
+  return schema.validate(url);
+};
+
 const formHandler = (state, form) => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -53,15 +63,7 @@ const formHandler = (state, form) => {
     const urlProvided = formData.get('url').toString();
 
     const allLinks = [...state.feeds].map((feed) => feed.link);
-
-    const schema = yup
-      .string()
-      .required(constants.errors.REQUIRED)
-      .url(constants.errors.NOT_URL)
-      .notOneOf(allLinks, constants.errors.ALREADY);
-
-    schema
-      .validate(urlProvided)
+    validate(allLinks, urlProvided)
       .then(() => {
         state.status = constants.status.SENDING;
         state.error = null;

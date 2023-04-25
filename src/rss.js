@@ -34,9 +34,8 @@ const parseFeed = (channel, url) => {
 export const checkUpdates = (url, links) => {
   const proxy = getUrlPromise(url);
   return proxy.then((res) => {
-    const { data } = parse(res);
+    const { postsNodes } = parse(res);
 
-    const postsNodes = [...data.querySelectorAll('item')];
     const newPosts = postsNodes.filter((post) => {
       const link = post.querySelector('link').textContent;
       return !links.includes(link);
@@ -53,10 +52,7 @@ export const checkUpdates = (url, links) => {
 const getRssData = (url) => {
   const proxy = getUrlPromise(url);
   return proxy.then((res) => {
-    const { data } = parse(res);
-
-    const channel = data.querySelector('channel');
-    const postsNodes = [...data.querySelectorAll('item')];
+    const { postsNodes, channel } = parse(res);
 
     const feed = parseFeed(channel, url);
     const posts = postsNodes.map((post) => parsePost(post));

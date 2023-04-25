@@ -4,13 +4,15 @@ const parse = (response) => {
   const parser = new DOMParser();
   const data = parser.parseFromString(response.data.contents, 'text/xml');
   const error = data.querySelector('parsererror');
+  const channel = data.querySelector('channel');
   if (error) {
     const context = new Error(constants.errors.PARSE);
     throw context;
   }
 
   return {
-    data, error,
+    postsNodes: [...data.querySelectorAll('item')],
+    channel,
   };
 };
 
