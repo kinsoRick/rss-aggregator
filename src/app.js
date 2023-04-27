@@ -5,7 +5,7 @@ import i18next from 'i18next';
 
 import render from './render.js';
 
-import getRssData, { checkUpdates } from './rss.js';
+import getRssData from './rss.js';
 import constants from './constant.js';
 import resources from './locales/index.js';
 
@@ -14,8 +14,9 @@ const getCurrentLinks = (state) => state.posts.map((post) => post.link);
 const refreshFeeds = (state) => {
   const currentPostsLinks = getCurrentLinks(state);
 
-  const rssPromises = state.feeds.map((feed) => checkUpdates(feed.link, currentPostsLinks)
+  const rssPromises = state.feeds.map((feed) => getRssData(feed.link, currentPostsLinks)
     .then((response) => {
+      console.log(response);
       const { posts } = response;
       if (posts.length > 0) {
         state.posts = [...posts, ...state.posts];

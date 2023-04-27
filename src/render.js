@@ -159,7 +159,7 @@ const renderPosts = (postsFeed, viewedPosts, translate, nodes) => {
 // </RENDERS> //
 
 const renderByStatus = (state, translate, nodes) => {
-  enableForm();
+  enableForm(nodes);
   switch (state.status) {
     case constants.status.FILLING:
       break;
