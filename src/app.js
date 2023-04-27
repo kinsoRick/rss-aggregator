@@ -40,15 +40,15 @@ const setRssToState = (url, state) => {
     .catch((err) => {
       if (axios.isAxiosError(err)) {
         state.error = constants.errors.NETWORK;
-      }
-
-      switch (err.message) {
-        case constants.errors.PARSE:
-          state.error = constants.errors.PARSE;
-          break;
-        default:
-          state.error = constants.errors.UNKNOWN;
-          break;
+      } else {
+        switch (err.message) {
+          case constants.errors.PARSE:
+            state.error = constants.errors.PARSE;
+            break;
+          default:
+            state.error = constants.errors.UNKNOWN;
+            break;
+        }
       }
       state.status = constants.status.INVALID;
     });
