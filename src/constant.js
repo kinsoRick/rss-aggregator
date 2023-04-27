@@ -7,6 +7,7 @@ const constants = {
     SUCCESS: 'SUCCESS',
   },
   errors: {
+    UNKNOWN:   'UNKNOWN',
     REQUIRED: 'REQUIRED',
     NOT_URL: 'NOT_URL',
     ALREADY: 'ALREADY',

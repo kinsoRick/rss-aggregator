@@ -9,8 +9,10 @@ import getRssData, { checkUpdates } from './rss.js';
 import constants from './constant.js';
 import resources from './locales/index.js';
 
+const getCurrentLinks = (state) => state.posts.map((post) => post.link);
+
 const refreshFeeds = (state) => {
-  const currentPostsLinks = state.posts.map((post) => post.link);
+  const currentPostsLinks = getCurrentLinks(state);
 
   const rssPromises = state.feeds.map((feed) => checkUpdates(feed.link, currentPostsLinks)
     .then((response) => {
@@ -28,7 +30,7 @@ const refreshFeeds = (state) => {
 };
 
 const setRssToState = (url, state) => {
-  getRssData(url)
+  getRssData(url, getCurrentLinks(state))
     .then((data) => {
       state.feeds = [data.feed, ...state.feeds];
       state.posts = [...data.posts, ...state.posts];
@@ -38,8 +40,14 @@ const setRssToState = (url, state) => {
       if (axios.isAxiosError(err)) {
         state.error = constants.errors.NETWORK;
       }
-      if (err.message === constants.errors.PARSE) {
-        state.error = constants.errors.PARSE;
+
+      switch (err.message) {
+        case constants.errors.PARSE:
+          state.error = constants.errors.PARSE;
+          break;
+        default:
+          state.error = constants.errors.UNKNOWN;
+          break;
       }
       state.status = constants.status.INVALID;
     });
@@ -62,7 +70,7 @@ const formHandler = (state, form) => {
     const formData = new FormData(target);
     const urlProvided = formData.get('url').toString();
 
-    const allLinks = [...state.feeds].map((feed) => feed.link);
+    const allLinks = state.feeds.map((feed) => feed.link);
     validate(allLinks, urlProvided)
       .then(() => {
         state.status = constants.status.SENDING;

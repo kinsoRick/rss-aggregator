@@ -1,8 +1,6 @@
 import constants from './constant.js';
 
-const nodes = constants.nodes();
-
-const clearFeedback = () => {
+const clearFeedback = (nodes) => {
   nodes.label.classList.remove('text-danger', 'text-success');
   nodes.label.textContent = '';
 };
@@ -82,42 +80,42 @@ const createPostItem = (post, viewedPosts, translate) => {
 // </CREATORS> //
 
 // <FORM> //
-const enableForm = () => {
-  clearFeedback();
+const enableForm = (nodes) => {
+  clearFeedback(nodes);
   nodes.rssInput.removeAttribute('readonly');
   nodes.rssbtn.disabled = false;
 };
 
-const disableForm = () => {
-  clearFeedback();
+const disableForm = (nodes) => {
+  clearFeedback(nodes);
   nodes.rssInput.setAttribute('readonly', 'true');
   nodes.rssbtn.disabled = true;
 };
 
 // </FORM> //
 
-const renderError = (state, translate) => {
+const renderError = (state, translate, nodes) => {
   if (state.error === null) return;
-  clearFeedback();
+  clearFeedback(nodes);
   nodes.label.classList.add('text-danger');
   nodes.label.textContent = translate(`errors.${state.error}`);
 };
 
-const renderSuccess = (translate) => {
-  clearFeedback();
+const renderSuccess = (translate, nodes) => {
+  clearFeedback(nodes);
   nodes.label.classList.add('text-success');
   nodes.label.textContent = translate('status.SUCCESS');
   nodes.form.reset();
 };
 
-const changeModalValues = (post) => {
+const changeModalValues = (post, nodes) => {
   if (post === null) throw new Error(`Post Value must be more not null: ${post}`);
   nodes.modalTitle.textContent = post.title;
   nodes.modalInfo.textContent = post.description;
   nodes.modalBtn.href = post.link;
 };
 
-const setPostViewed = (postId) => {
+const setPostViewed = (postId, nodes) => {
   const item = nodes.posts.querySelector(`li[data-post-id="${postId}"]`);
   const link = item.querySelector('a');
   link.classList.remove('fw-bold');
@@ -125,7 +123,7 @@ const setPostViewed = (postId) => {
 };
 
 // <RENDERS> //
-const renderFeeds = (feeds, translate) => {
+const renderFeeds = (feeds, translate, nodes) => {
   const card = createCard('ui.FEEDS', translate);
 
   nodes.feeds.textContent = '';
@@ -140,7 +138,7 @@ const renderFeeds = (feeds, translate) => {
   nodes.feeds.append(card, feedsList);
 };
 
-const renderPosts = (postsFeed, viewedPosts, translate) => {
+const renderPosts = (postsFeed, viewedPosts, translate, nodes) => {
   nodes.posts.textContent = '';
 
   const postsList = document.createElement('ul');
@@ -160,21 +158,21 @@ const renderPosts = (postsFeed, viewedPosts, translate) => {
 };
 // </RENDERS> //
 
-const renderByStatus = (state, translate) => {
+const renderByStatus = (state, translate, nodes) => {
   enableForm();
   switch (state.status) {
     case constants.status.FILLING:
       break;
     case constants.status.SENDING:
-      disableForm();
+      disableForm(nodes);
       break;
     case constants.status.INVALID:
-      renderError(state, translate);
+      renderError(state, translate, nodes);
       break;
     case constants.status.RECEIVED:
-      renderFeeds([...state.feeds], translate);
-      renderPosts([...state.posts], [...state.postsViewed.all], translate);
-      renderSuccess(translate);
+      renderFeeds(state.feeds, translate, nodes);
+      renderPosts(state.posts, state.postsViewed.all, translate, nodes);
+      renderSuccess(translate, nodes);
       break;
     default:
       throw new Error(`Unknown status type -> ${state.status}`);
@@ -182,19 +180,20 @@ const renderByStatus = (state, translate) => {
 };
 
 const render = (state, path, translate) => {
+  const nodes = constants.nodes();
   switch (path) {
     case 'error':
-      renderError(state, translate);
+      renderError(state, translate, nodes);
       break;
     case 'status':
-      renderByStatus(state, translate);
+      renderByStatus(state, translate, nodes);
       break;
     case 'posts':
-      renderPosts(state.posts, state.postsViewed.all, translate);
+      renderPosts(state.posts, state.postsViewed.all, translate, nodes);
       break;
     case 'postsViewed.current':
-      changeModalValues(state.postsViewed.current);
-      setPostViewed(state.postsViewed.current.id);
+      changeModalValues(state.postsViewed.current, nodes);
+      setPostViewed(state.postsViewed.current.id, nodes);
       break;
     default:
       break;
