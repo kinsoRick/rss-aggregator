@@ -16,7 +16,7 @@
 > RSS Агрегатор
 
 ### 🏠 [Homepage](https://github.com/kinsoRick/frontend-project-11#readme)
-<a href="https://frontend-project-11-nine-nu.vercel.app/">Site</a>
+<a href="https://rss-aggregator-ts.vercel.app/">Site</a>
 ## Install
 
 ```sh
